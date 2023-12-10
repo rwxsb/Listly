@@ -21,18 +21,19 @@ internal sealed class ListlyDbInitializer(IServiceProvider serviceProvider, ILog
     private async Task InitializeDatabaseAsync(ListlyDbContext dbContext, CancellationToken cancellationToken)
     {
         await dbContext.Database.EnsureCreatedAsync(cancellationToken);
-        
+
         var strategy = dbContext.Database.CreateExecutionStrategy();
 
         using var activity = _activitySource.StartActivity("Migrating Shopping List database", ActivityKind.Client);
 
         var sw = Stopwatch.StartNew();
-        
+
         strategy.Execute(() => dbContext.Database.Migrate());
 
         await SeedAsync(dbContext, cancellationToken);
 
-        logger.LogInformation("Database initialization completed after {ElapsedMilliseconds}ms", sw.ElapsedMilliseconds);
+        logger.LogInformation("Database initialization completed after {ElapsedMilliseconds}ms",
+            sw.ElapsedMilliseconds);
     }
 
     private async Task SeedAsync(ListlyDbContext dbContext, CancellationToken cancellationToken)
@@ -41,13 +42,20 @@ internal sealed class ListlyDbInitializer(IServiceProvider serviceProvider, ILog
 
         static List<ListItem> GetPreconfiguredItems()
         {
-
             return new List<ListItem>()
             {
-                new () { Content = "Carrots"}
+                new()
+                {
+                    Id = 1,
+                    Content = "Bananas",
+                    Quantity = 1,
+                    Unit = "kgs",
+                    Frequency = "Bi-weekly",
+                    LastPurchased = new DateTime(2023, 09,24,0,0,0, DateTimeKind.Utc)
+                }
             };
         }
-        
+
 
         if (!dbContext.ListItems.Any())
         {

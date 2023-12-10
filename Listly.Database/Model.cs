@@ -50,14 +50,32 @@ public class ListlyDbContext(DbContextOptions<ListlyDbContext> options) : DbCont
 
         builder.Property(li => li.Content)
             .IsRequired();
+        
+        builder.Property(li => li.Quantity)
+            .IsRequired();
+        
+        builder.Property(li => li.Unit)
+            .IsRequired();
+        
+        builder.Property(li => li.Frequency)
+            .IsRequired();
+        
+        builder.Property(li => li.LastPurchased)
+            .IsRequired();
 
     }
 
 }
-public record Item(int Id, string content);
-
 public class ListItem
 {
     public int Id { get; set; }
     public required string Content { get; set; }
+    
+    public decimal Quantity { get; set; }
+    
+    public string Unit { get; set; }
+    
+    public string Frequency { get; set; }
+    
+    public DateTime LastPurchased { get; set; }
 }
