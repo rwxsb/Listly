@@ -22,9 +22,18 @@ public class ShoppingListController : ControllerBase
     }
 
     [HttpPost("ListItem")]
-    public Task AddListItem(ListItem item)
+    public Task AddListItem([FromQuery] string item)
     {
-        return _shoppingListManager.AddListItem(item);
+        return _shoppingListManager.AddListItem(new ListItem()
+        {
+            Content = item
+        });
+    }
+    
+    [HttpPost("CheckListItem")]
+    public Task CheckListItem([FromQuery] Guid item)
+    {
+        return _shoppingListManager.BuyListItem(item);
     }
     
 }

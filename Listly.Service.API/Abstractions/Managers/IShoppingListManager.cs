@@ -7,4 +7,6 @@ public interface IShoppingListManager
     Task<List<ListItem>> GetListItems();
 
     Task AddListItem(ListItem item);
+
+    Task BuyListItem(Guid id);
 }

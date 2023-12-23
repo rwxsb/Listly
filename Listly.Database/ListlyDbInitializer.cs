@@ -46,12 +46,7 @@ internal sealed class ListlyDbInitializer(IServiceProvider serviceProvider, ILog
             {
                 new()
                 {
-                    Id = 1,
                     Content = "Bananas",
-                    Quantity = 1,
-                    Unit = "kgs",
-                    Frequency = "Bi-weekly",
-                    LastPurchased = new DateTime(2023, 09,24,0,0,0, DateTimeKind.Utc)
                 }
             };
         }

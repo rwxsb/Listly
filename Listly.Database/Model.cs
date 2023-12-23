@@ -8,7 +8,8 @@ public class ListlyDbContext(DbContextOptions<ListlyDbContext> options) : DbCont
 
     private static readonly Func<ListlyDbContext, IAsyncEnumerable<ListItem>> s_getListItems =
         EF.CompileAsyncQuery((ListlyDbContext context) =>
-            context.ListItems.AsNoTracking());
+            context.ListItems.AsNoTracking()
+                .Where(x => !x.Bought));
     
     public Task<List<ListItem>> GetListItemsCompiledAsync()
     {
@@ -19,6 +20,14 @@ public class ListlyDbContext(DbContextOptions<ListlyDbContext> options) : DbCont
     {
         this.ListItems.AddAsync(item, default);
         return SaveChangesAsync();
+    }
+
+    public async Task SetBoughtTrue(Guid itemId)
+    {
+        var item = await this.ListItems.FindAsync(itemId);
+        item.Bought = true;
+        this.ListItems.Update(item);
+        await SaveChangesAsync();
     }
     
     private static async Task<List<T>> ToListAsync<T>(IAsyncEnumerable<T> asyncEnumerable)
@@ -51,31 +60,20 @@ public class ListlyDbContext(DbContextOptions<ListlyDbContext> options) : DbCont
         builder.Property(li => li.Content)
             .IsRequired();
         
-        builder.Property(li => li.Quantity)
+        builder.Property(li => li.Added)
             .IsRequired();
         
-        builder.Property(li => li.Unit)
+        builder.Property(li => li.Bought)
             .IsRequired();
-        
-        builder.Property(li => li.Frequency)
-            .IsRequired();
-        
-        builder.Property(li => li.LastPurchased)
-            .IsRequired();
+
 
     }
 
 }
 public class ListItem
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public required string Content { get; set; }
-    
-    public decimal Quantity { get; set; }
-    
-    public string Unit { get; set; }
-    
-    public string Frequency { get; set; }
-    
-    public DateTime LastPurchased { get; set; }
+    public DateTime Added { get; set; } = DateTime.UtcNow;
+    public bool Bought { get; set; } = false;
 }
