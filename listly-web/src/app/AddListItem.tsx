@@ -28,6 +28,7 @@ export function AddListItem(props: {api: string}) {
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
+        setItem("")
         router.refresh();
     }
 
@@ -44,7 +45,7 @@ export function AddListItem(props: {api: string}) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Add Item</ModalHeader>
                             <ModalBody>
                                 <Input
                                     autoFocus
