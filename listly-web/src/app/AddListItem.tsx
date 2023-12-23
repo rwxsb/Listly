@@ -11,8 +11,10 @@ import {
     Input
 } from "@nextui-org/react";
 import {PlusFilledIcon, ShoppingCartBoldIcon} from "@nextui-org/shared-icons";
+import {useRouter} from "next/navigation";
 
 export function AddListItem(props: {api: string}) {
+    const router = useRouter()
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [item, setItem] = useState('');
     const onSubmit = async () => {
@@ -26,6 +28,7 @@ export function AddListItem(props: {api: string}) {
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
+        router.refresh();
     }
 
     return (

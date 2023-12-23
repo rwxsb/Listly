@@ -1,8 +1,10 @@
 'use client'
 import getConfig from "next/config";
 import {MouseEventHandler} from "react";
+import {useRouter} from "next/navigation";
 
 export async function CheckListItem(props: { id: string, api: string }) {
+    const router = useRouter();
     async function onCheck(event: any) {
         if(event.target.checked)
         {
@@ -15,6 +17,7 @@ export async function CheckListItem(props: { id: string, api: string }) {
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .catch(error => console.error('Error:', error));
+            router.refresh();
         }
     }
 
