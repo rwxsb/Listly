@@ -1,27 +1,24 @@
+import {CheckListItem} from "@/app/CheckListItem";
+
 export interface ListItemProps {
-  id: number;
+  id: string;
   content: string;
-  quantity: number;
-  unit: string;
-  frequency: string;
-  lastPurchased: Date;
+  added: Date;
+  bought: boolean;
 }
 
 export function ListItem(props: ListItemProps) {
+  const api = process.env['services__listly.service.api__1'];
+
   return (
+      api !== undefined &&
       <div className="container mx-auto mt-10">
         <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white flex items-center">
-          <input type="checkbox" className="ml-4"/>
+          <CheckListItem id={props.id} api={api}/>
           <div className="px-6 py-4">
             <div className="font-bold text-xl mb-2">{props.content}</div>
             <p className="text-gray-700 text-base">
-              {props.quantity} {props.unit}
-            </p>
-            <p className="text-gray-700 text-base">
-              Frequency: {props.frequency}
-            </p>
-            <p className="text-gray-700 text-base">
-              Last Purchased: {props.lastPurchased.toLocaleString("en-US").split("T")[0]}
+              Added: {props.added.toLocaleString("en-US").split("T")[0]}
             </p>
           </div>
         </div>

@@ -21,4 +21,9 @@ public class ShoppingListManager : IShoppingListManager
     {
         return this._context.AddListItem(item);
     }
+
+    public Task BuyListItem(Guid id)
+    {
+        return this._context.SetBoughtTrue(id);
+    }
 }
